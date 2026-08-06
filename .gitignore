@@ -1,0 +1,19 @@
+# Build outputs
+build/
+*.o
+*.obj
+*.moc
+*.rcc
+*.qm
+*.exe
+Makefile
+Makefile.*
+
+# Qt Creator user files
+*.pro.user
+*.pro.user.*
+.qtcreator/
+
+# IDE
+.qtc_clangd/
+.vscode/
