@@ -14,7 +14,8 @@ SOURCES += \
 HEADERS += \
     AppItem.h \
     database.h \
-    mainwindow.h
+    mainwindow.h \
+    styles.h
 
 FORMS += \
     mainwindow.ui

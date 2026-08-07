@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include "AppItem.h"
-#include "qpushbutton.h"
 #include <QMainWindow>
+#include <QToolButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,7 +26,7 @@ private:
     AppItem m_currentApp;
     Ui::MainWindow *ui;
     void drawLine(QPainter &painter);
-    void setGeometryButton(QPushButton *opener);
+    void setGeometryButton(QToolButton *opener);
     AppItem takeInfo();
 private slots:
     void on_openFileButton_clicked();

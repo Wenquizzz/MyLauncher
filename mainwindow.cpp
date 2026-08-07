@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "styles.h"
 #include <QPainter>
 #include <QPushButton>
 #include <QFileDialog>
@@ -7,6 +8,8 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QProcess>
+#include <QToolButton>
+#include <QFileIconProvider>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -38,6 +41,9 @@ void MainWindow::drawLine(QPainter &painter){
 AppItem MainWindow::takeInfo() {
     QString filePath = QFileDialog::getOpenFileName(this, "Заголовок окна", "C:/", "Исполняемые файлы (*.exe)");
     AppItem data;
+    if (filePath.isEmpty()) {
+        return data;
+    }
     data.name = QFileInfo(filePath).baseName();
     data.exePath = filePath;
     qDebug() << data.name;
@@ -45,7 +51,7 @@ AppItem MainWindow::takeInfo() {
     return data;
 }
 
-void MainWindow::setGeometryButton(QPushButton *opener){
+void MainWindow::setGeometryButton(QToolButton *opener){
     if (l>4) {
         l=0;
         h++;
@@ -58,12 +64,26 @@ void MainWindow::setGeometryButton(QPushButton *opener){
 
 void MainWindow::on_openFileButton_clicked() {
     m_currentApp = takeInfo();
-    QPushButton *opener = new QPushButton(m_currentApp.name, this);
+
+    if (m_currentApp.exePath.isEmpty()) {
+        return;
+    }
+
+    QToolButton *opener = new QToolButton(this);
+    QFileIconProvider provider;
+    QIcon icon = provider.icon(QFileInfo(m_currentApp.exePath));
+
+    opener->setIcon(icon);
+    opener->setIconSize(QSize(100, 100));
+    opener->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    opener->setStyleSheet(GAME_CARD_STYLE);
+    opener->setText(m_currentApp.name);
     setGeometryButton(opener);
+
     opener->setProperty("exePath", m_currentApp.exePath);
     opener-> show();
 
-    connect(opener, &QPushButton::clicked, this, [this, opener]() {
+    connect(opener, &QPushButton::clicked, this, [opener]() {
         QString path = opener->property("exePath").toString();
         QProcess::startDetached(path);
     });
