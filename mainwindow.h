@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "AppItem.h"
+#include "gamecard.h"
 #include <QMainWindow>
 #include <QToolButton>
 
@@ -21,12 +22,13 @@ public:
     ~MainWindow() override;
 
 private:
+    int counter = 0;
     int l = 0;
     int h = 0;
-    AppItem m_currentApp;
+    AppItem cardInfo;
     Ui::MainWindow *ui;
     void drawLine(QPainter &painter);
-    void setGeometryButton(QToolButton *opener);
+    void setGeometryButton(Gamecard *card);
     AppItem takeInfo();
 private slots:
     void on_openFileButton_clicked();

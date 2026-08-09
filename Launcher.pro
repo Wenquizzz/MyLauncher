@@ -8,12 +8,14 @@ CONFIG += c++17
 
 SOURCES += \
     database.cpp \
+    gamecard.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     AppItem.h \
     database.h \
+    gamecard.h \
     mainwindow.h \
     styles.h
 
