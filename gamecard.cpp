@@ -7,7 +7,6 @@ Gamecard::Gamecard(int id, const QString &name, const QString &exePath, const QI
 {
     m_exePath = exePath;
     m_id = id;
-
     setFixedSize(150, 210);
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(GAME_CARD_STYLE);
@@ -22,9 +21,21 @@ Gamecard::Gamecard(int id, const QString &name, const QString &exePath, const QI
     nameLabel->setAlignment(Qt::AlignCenter);
     layout->addWidget(nameLabel);
 
+    QPushButton *delete_button = new QPushButton(this);
+    delete_button -> setGeometry(130, 10, 10, 10);
+    connect(delete_button, &QPushButton::clicked, this, &Gamecard::onDeleteClicked);
+
     setCursor(Qt::PointingHandCursor);
 }
 
 void Gamecard::mouseDoubleClickEvent(QMouseEvent *event) {
     QProcess::startDetached (m_exePath);
 }
+
+
+void Gamecard::onDeleteClicked() {
+    emit removeRequested(m_id);
+}
+
+
+

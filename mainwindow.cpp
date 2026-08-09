@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "gamecard.h"
 #include "styles.h"
+#include <QVector>
 #include <QPainter>
 #include <QPushButton>
 #include <QFileDialog>
@@ -48,22 +49,25 @@ AppItem MainWindow::takeInfo() {
     if (filePath.isEmpty()) {
         return data;
     }
+    counterCards++;
     data.name = QFileInfo(filePath).baseName();
     data.exePath = filePath;
+    data.id = counterCards;
     qDebug() << data.name;
     qDebug() << filePath;
+    qDebug() << data.id;
     return data;
 }
 
-void MainWindow::setGeometryButton(Gamecard *card){
-    if (l>4) {
-        l=0;
-        h++;
-    };
-    int left_indent = 264+(l*182);
-    int top_indent = 32+(h*242);
-    card ->setGeometry(left_indent, top_indent, 150, 210);
-    l++;
+void MainWindow::setGeometryButtons(){
+    int size = cardList.size();
+    for(int i = 0; i < size; i++) {
+        l = i%5;
+        h = i/5;
+        int left_indent = 264+(l*182);
+        int top_indent = 32+(h*242);
+        cardList[i] -> setGeometry(left_indent, top_indent, 150, 210);
+    }
 }
 
 void MainWindow::on_openFileButton_clicked() {
@@ -75,16 +79,23 @@ void MainWindow::on_openFileButton_clicked() {
 
     QFileIconProvider provider;
     QIcon icon = provider.icon(QFileInfo(cardInfo.exePath));
-
     Gamecard *card = new Gamecard(cardInfo.id, cardInfo.name, cardInfo.exePath, icon, this);
-    setGeometryButton(card);
+    connect(card, &Gamecard::removeRequested, this, &MainWindow::onCardRemoveRequested);
+    cardList.push_back(card);
+    qDebug() << cardList;
     card->setProperty("exePath", cardInfo.exePath);
+    setGeometryButtons();
     card-> show();
 }
 
-
-
-
+void MainWindow::onCardRemoveRequested() {
+    Gamecard *card = qobject_cast<Gamecard*>(sender());
+    if (card) {
+        cardList.removeOne(card);
+        card->deleteLater();
+        setGeometryButtons();
+    }
+}
 
 
 

@@ -22,17 +22,18 @@ public:
     ~MainWindow() override;
 
 private:
-    int counter = 0;
+    int counterCards = 0;
     int l = 0;
     int h = 0;
+    QVector<Gamecard*> cardList;
     AppItem cardInfo;
     Ui::MainWindow *ui;
     void drawLine(QPainter &painter);
-    void setGeometryButton(Gamecard *card);
+    void setGeometryButtons();
     AppItem takeInfo();
 private slots:
     void on_openFileButton_clicked();
-    //void on_opener_clicked();
+    void onCardRemoveRequested();
 };
 
 
