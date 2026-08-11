@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "AppItem.h"
+#include "database.h"
 #include "gamecard.h"
 #include <QMainWindow>
 #include <QToolButton>
@@ -17,6 +18,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    void extracted(QVector<AppItem> &savedApps);
     explicit MainWindow(QWidget *parent = nullptr);
     virtual void paintEvent(QPaintEvent *event) override;
     ~MainWindow() override;
@@ -25,6 +27,7 @@ private:
     int counterCards = 0;
     int l = 0;
     int h = 0;
+    Database db;
     QVector<Gamecard*> cardList;
     AppItem cardInfo;
     Ui::MainWindow *ui;

@@ -1,14 +1,14 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-//#include <QSqlDatabase>
+#include <QSqlDatabase>
 #include <QVector>
 #include "AppItem.h"
 
-class database {
+class Database {
 public:
-    database();
-    ~database();
+    Database();
+    ~Database();
 
     bool openBase(const QString &path);
     void closeBase();
@@ -18,7 +18,7 @@ public:
     bool deleteProgram(int id);
 
 private:
-//    QSqlDatabase m_db;
+    QSqlDatabase m_db;
     bool createTable();
 };
 

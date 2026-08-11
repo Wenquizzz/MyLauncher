@@ -20,6 +20,19 @@ MainWindow::MainWindow(QWidget *parent)
     setFixedSize(1190, 750);
     ui->setupUi(this);
 
+    db.openBase("launcher.db");
+    QVector<AppItem> savedApps = db.takeListOfBase();
+    for (const AppItem &app : savedApps) {
+        QFileIconProvider provider;
+        QIcon icon = provider.icon(QFileInfo(app.exePath));
+        Gamecard *card = new Gamecard(app.id, app.name, app.exePath, icon, this);
+        connect(card, &Gamecard::removeRequested, this, &MainWindow::onCardRemoveRequested);
+        cardList.push_back(card);
+        card->show();
+    }
+
+    setGeometryButtons();
+
     QPushButton *openFileButton = new QPushButton("Добавить файл", this);
     openFileButton ->setGeometry(16, 16, 200, 80);
     openFileButton->setStyleSheet(MENU_CARD_STYLE);
@@ -80,6 +93,7 @@ void MainWindow::on_openFileButton_clicked() {
     QFileIconProvider provider;
     QIcon icon = provider.icon(QFileInfo(cardInfo.exePath));
     Gamecard *card = new Gamecard(cardInfo.id, cardInfo.name, cardInfo.exePath, icon, this);
+    db.addProgramToBase(cardInfo);
     connect(card, &Gamecard::removeRequested, this, &MainWindow::onCardRemoveRequested);
     cardList.push_back(card);
     qDebug() << cardList;
@@ -90,7 +104,10 @@ void MainWindow::on_openFileButton_clicked() {
 
 void MainWindow::onCardRemoveRequested() {
     Gamecard *card = qobject_cast<Gamecard*>(sender());
+
     if (card) {
+        int id = card->getId();
+        db.deleteProgram(id);
         cardList.removeOne(card);
         card->deleteLater();
         setGeometryButtons();
