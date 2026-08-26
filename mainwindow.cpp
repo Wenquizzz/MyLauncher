@@ -1,7 +1,6 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "gamecard.h"
 #include "styles.h"
+#include "ui_mainwindow.h"
 #include <QVector>
 #include <QPainter>
 #include <QPushButton>
@@ -19,25 +18,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setFixedSize(1190, 750);
     ui->setupUi(this);
+//Windows:
+    m_gamelist = new gamelistWindow(this);
+    m_gamelist->setGeometry(232, 0, 958, 750);
+    m_gamelist->show();
 
-    db.openBase("launcher.db");
-    QVector<AppItem> savedApps = db.takeListOfBase();
-    for (const AppItem &app : savedApps) {
-        QFileIconProvider provider;
-        QIcon icon = provider.icon(QFileInfo(app.exePath));
-        Gamecard *card = new Gamecard(app.id, app.name, app.exePath, icon, this);
-        connect(card, &Gamecard::removeRequested, this, &MainWindow::onCardRemoveRequested);
-        cardList.push_back(card);
-        card->show();
-    }
+    m_optimizationWindow = new optimizationWindow(this);
+    m_optimizationWindow->setGeometry(232, 0, 958, 750);
+    m_optimizationWindow ->hide();
+//Buttons:
+    QPushButton *gamelistButton = new QPushButton("gamelist", this);
+    gamelistButton->setGeometry(16, 16, 200, 80);
+    gamelistButton->show();
+    gamelistButton->setStyleSheet(MENU_CARD_STYLE);
+    connect(gamelistButton, &QPushButton::clicked, this, &MainWindow::on_gamelistButton_clicked);
 
-    setGeometryButtons();
+    QPushButton *optimizationWindowButton = new QPushButton("optimization", this);
+    optimizationWindowButton->setGeometry(16, 112, 200, 80);
+    optimizationWindowButton->show();
+    optimizationWindowButton->setStyleSheet(MENU_CARD_STYLE);
+    connect(optimizationWindowButton, &QPushButton::clicked, this, &MainWindow::on_optimizationWindowButton_clicked);
 
-    QPushButton *openFileButton = new QPushButton("Добавить файл", this);
-    openFileButton ->setGeometry(16, 16, 200, 80);
-    openFileButton->setStyleSheet(MENU_CARD_STYLE);
-
-    connect(openFileButton, &QPushButton::clicked, this, &MainWindow::on_openFileButton_clicked);;
 }
 
 MainWindow::~MainWindow()
@@ -47,8 +48,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *) {
     QPainter painter(this);
-    //QPen pen(QColor(0x7C4DFF), 1);
-    //painter.setPen(pen);
     drawLine(painter);
 }
 
@@ -56,65 +55,15 @@ void MainWindow::drawLine(QPainter &painter){
     painter.drawLine(232, 0, 232, 750);
 }
 
-AppItem MainWindow::takeInfo() {
-    QString filePath = QFileDialog::getOpenFileName(this, "Заголовок окна", "C:/", "Исполняемые файлы (*.exe)");
-    AppItem data;
-    if (filePath.isEmpty()) {
-        return data;
-    }
-    counterCards++;
-    data.name = QFileInfo(filePath).baseName();
-    data.exePath = filePath;
-    data.id = counterCards;
-    qDebug() << data.name;
-    qDebug() << filePath;
-    qDebug() << data.id;
-    return data;
+void MainWindow::on_gamelistButton_clicked() {
+    m_gamelist->show();
+    m_optimizationWindow->hide();
 }
 
-void MainWindow::setGeometryButtons(){
-    int size = cardList.size();
-    for(int i = 0; i < size; i++) {
-        l = i%5;
-        h = i/5;
-        int left_indent = 264+(l*182);
-        int top_indent = 32+(h*242);
-        cardList[i] -> setGeometry(left_indent, top_indent, 150, 210);
-    }
+void MainWindow::on_optimizationWindowButton_clicked() {
+    m_gamelist->hide();
+    m_optimizationWindow->show();
 }
-
-void MainWindow::on_openFileButton_clicked() {
-    cardInfo = takeInfo();
-
-    if (cardInfo.exePath.isEmpty()) {
-        return;
-    }
-
-    QFileIconProvider provider;
-    QIcon icon = provider.icon(QFileInfo(cardInfo.exePath));
-    Gamecard *card = new Gamecard(cardInfo.id, cardInfo.name, cardInfo.exePath, icon, this);
-    db.addProgramToBase(cardInfo);
-    connect(card, &Gamecard::removeRequested, this, &MainWindow::onCardRemoveRequested);
-    cardList.push_back(card);
-    qDebug() << cardList;
-    card->setProperty("exePath", cardInfo.exePath);
-    setGeometryButtons();
-    card-> show();
-}
-
-void MainWindow::onCardRemoveRequested() {
-    Gamecard *card = qobject_cast<Gamecard*>(sender());
-
-    if (card) {
-        int id = card->getId();
-        db.deleteProgram(id);
-        cardList.removeOne(card);
-        card->deleteLater();
-        setGeometryButtons();
-    }
-}
-
-
 
 
 

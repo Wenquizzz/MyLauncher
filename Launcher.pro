@@ -10,14 +10,18 @@ CONFIG += c++17
 SOURCES += \
     database.cpp \
     gamecard.cpp \
+    gamelistwindow.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    optimizationwindow.cpp
 
 HEADERS += \
     AppItem.h \
     database.h \
     gamecard.h \
+    gamelistwindow.h \
     mainwindow.h \
+    optimizationwindow.h \
     styles.h
 
 FORMS += \

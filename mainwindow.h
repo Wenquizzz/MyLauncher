@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include "AppItem.h"
-#include "database.h"
-#include "gamecard.h"
+#include "gamelistwindow.h"
+#include "optimizationwindow.h"
 #include <QMainWindow>
 #include <QToolButton>
 
@@ -22,21 +22,14 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     virtual void paintEvent(QPaintEvent *event) override;
     ~MainWindow() override;
-
 private:
-    int counterCards = 0;
-    int l = 0;
-    int h = 0;
-    Database db;
-    QVector<Gamecard*> cardList;
-    AppItem cardInfo;
+    gamelistWindow *m_gamelist;
+    optimizationWindow *m_optimizationWindow;
     Ui::MainWindow *ui;
     void drawLine(QPainter &painter);
-    void setGeometryButtons();
-    AppItem takeInfo();
 private slots:
-    void on_openFileButton_clicked();
-    void onCardRemoveRequested();
+    void on_gamelistButton_clicked();
+    void on_optimizationWindowButton_clicked();
 };
 
 
