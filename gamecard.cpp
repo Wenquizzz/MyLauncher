@@ -21,8 +21,8 @@ Gamecard::Gamecard(int id, const QString &name, const QString &exePath, const QI
     nameLabel->setAlignment(Qt::AlignCenter);
     layout->addWidget(nameLabel);
 
-    QPushButton *delete_button = new QPushButton(this);
-    delete_button -> setGeometry(130, 10, 10, 10);
+    QPushButton *delete_button = new QPushButton("X", this);
+    delete_button -> setGeometry(120, 10, 20, 20);
     connect(delete_button, &QPushButton::clicked, this, &Gamecard::onDeleteClicked);
 
     setCursor(Qt::PointingHandCursor);

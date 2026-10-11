@@ -3,6 +3,13 @@
 
 #include <QString>
 
+const QString MAIN_WINDOW_STYLE = R"(
+    QMainWindow {
+        background-color: #FFFFFF;
+        font-family: "Segoe UI", "Inter", sans-serif;
+    }
+)";
+
 const QString GAME_CARD_STYLE = R"(
 
 .Gamecard {
@@ -21,13 +28,6 @@ QLabel {
     font-size: 16px;
     border: none;
     margin: 8px;
-}
-)";
-
-const QString MAIN_WINDOW_STYLE = R"(
-QMainWindow {
-    background-color: #FFFAFA; /* Основной темный фон */
-    font-family: "Segoe UI", "Inter", sans-serif;
 }
 )";
 

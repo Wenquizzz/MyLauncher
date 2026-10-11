@@ -5,6 +5,8 @@
 #include "database.h"
 #include "gamecard.h"
 #include <QWidget>
+#include <QScrollArea>
+#include <QGridLayout>
 
 class gamelistWindow : public QWidget
 {
@@ -17,13 +19,17 @@ private:
     int counterCards = 0;
     int l = 0;
     int h = 0;
+    QScrollArea *m_scrollArea;
+    QWidget *m_container;
+    QGridLayout *m_gridLayout;
     Database db;
     QVector<Gamecard*> cardList;
     AppItem cardInfo;
     void setGeometryButtons();
     AppItem takeInfo();
-private slots:
+public slots:
     void on_openFileButton_clicked();
+private slots:
     void onCardRemoveRequested();
 };
 

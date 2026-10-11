@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     setFixedSize(1190, 750);
+    setStyleSheet(MAIN_WINDOW_STYLE);
     ui->setupUi(this);
 //Windows:
     m_gamelist = new gamelistWindow(this);
@@ -26,6 +27,11 @@ MainWindow::MainWindow(QWidget *parent)
     m_optimizationWindow = new optimizationWindow(this);
     m_optimizationWindow->setGeometry(232, 0, 958, 750);
     m_optimizationWindow ->hide();
+//Line:
+    QFrame *line = new QFrame(this);
+    line->setGeometry(232, 0, 1, 750);
+    line->setStyleSheet("background-color: black;");
+    line->show();
 //Buttons:
     QPushButton *gamelistButton = new QPushButton("gamelist", this);
     gamelistButton->setGeometry(16, 16, 200, 80);
@@ -38,6 +44,12 @@ MainWindow::MainWindow(QWidget *parent)
     optimizationWindowButton->show();
     optimizationWindowButton->setStyleSheet(MENU_CARD_STYLE);
     connect(optimizationWindowButton, &QPushButton::clicked, this, &MainWindow::on_optimizationWindowButton_clicked);
+
+    QPushButton *openFileButton = new QPushButton("+", this);
+    openFileButton->setGeometry(1100, 660, 80, 80);
+    openFileButton->setStyleSheet(ADD_CARD_STYLE);
+
+    connect(openFileButton, &QPushButton::clicked, m_gamelist, &gamelistWindow::on_openFileButton_clicked);
 
 }
 
@@ -64,6 +76,8 @@ void MainWindow::on_optimizationWindowButton_clicked() {
     m_gamelist->hide();
     m_optimizationWindow->show();
 }
+
+
 
 
 
