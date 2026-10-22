@@ -4,6 +4,7 @@
 #include "AppItem.h"
 #include "gamelistwindow.h"
 #include "optimizationwindow.h"
+#include "settings.h"
 #include <QMainWindow>
 #include <QToolButton>
 
@@ -20,16 +21,19 @@ class MainWindow : public QMainWindow
 public:
     void extracted(QVector<AppItem> &savedApps);
     explicit MainWindow(QWidget *parent = nullptr);
-    virtual void paintEvent(QPaintEvent *event) override;
     ~MainWindow() override;
 private:
+    QPushButton *openFileButton = new QPushButton("+", this);
     gamelistWindow *m_gamelist;
     optimizationWindow *m_optimizationWindow;
+    Settings *m_settings;
+    bool isDark = true;
     Ui::MainWindow *ui;
-    void drawLine(QPainter &painter);
 private slots:
     void on_gamelistButton_clicked();
     void on_optimizationWindowButton_clicked();
+    void on_settingsbutton_clicked();
+    void changeTheme();
 };
 
 

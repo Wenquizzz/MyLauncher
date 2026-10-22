@@ -24,6 +24,7 @@ const QString GAME_CARD_STYLE = R"(
 }
 
 QLabel {
+    color: #000000;
     background: transparent;
     font-size: 16px;
     border: none;
@@ -35,6 +36,7 @@ const QString MENU_CARD_STYLE = R"(
 
 QPushButton {
     font-size: 14px;
+    color: #000000;
     background-color: #D3D3D3;
     border: 1px solid #808080;
     border-radius: 8px;
@@ -89,5 +91,26 @@ QCheckBox::indicator:checked:hover {
     background-color: #1F3333;
 }
 )";
+const QString QTAB_STYLE = R"(
+QTabBar::tab {
+    border-top: none;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 1px solid black;
+    padding: 12px 40px;
+    font-size: 16px;
+    font-weight: bold;
+}
 
+QTabBar::tab:selected {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
+}
+
+QTabWidget::pane {
+    border: 1px solid black;
+    top: -1px;
+    background-color: #FFFFFF;
+}
+)";
 #endif // STYLES_H

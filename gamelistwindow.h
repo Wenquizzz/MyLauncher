@@ -14,7 +14,6 @@ class gamelistWindow : public QWidget
 
 public:
     explicit gamelistWindow(QWidget *parent = nullptr);
-    void extracted(QVector<AppItem> &savedApps);
 private:
     int counterCards = 0;
     int l = 0;

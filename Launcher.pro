@@ -13,7 +13,8 @@ SOURCES += \
     gamelistwindow.cpp \
     main.cpp \
     mainwindow.cpp \
-    optimizationwindow.cpp
+    optimizationwindow.cpp \
+    settings.cpp
 
 HEADERS += \
     AppItem.h \
@@ -22,6 +23,7 @@ HEADERS += \
     gamelistwindow.h \
     mainwindow.h \
     optimizationwindow.h \
+    settings.h \
     styles.h
 
 FORMS += \

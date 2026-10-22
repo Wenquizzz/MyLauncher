@@ -48,6 +48,12 @@ gamelistWindow::gamelistWindow(QWidget *parent)
     }
 
     setGeometryButtons();
+    QPushButton *openFileButton = new QPushButton("+", this);
+    openFileButton->setGeometry(868, 660, 80, 80);
+    openFileButton->setStyleSheet(ADD_CARD_STYLE);
+    openFileButton->show();
+    openFileButton->raise();
+    connect(openFileButton, &QPushButton::clicked, this, &gamelistWindow::on_openFileButton_clicked);
 }
 
 AppItem gamelistWindow::takeInfo() {
