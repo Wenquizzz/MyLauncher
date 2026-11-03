@@ -15,8 +15,8 @@
 #include <QScrollArea>
 #include <QGridLayout>
 
-gamelistWindow::gamelistWindow(QWidget *parent)
-    : QWidget(parent)
+gamelistWindow::gamelistWindow(Database *db, QWidget *parent)
+    : QWidget(parent), m_db(db)
 {
     setGeometry(0, 0, 958, 750);
 
@@ -36,8 +36,7 @@ gamelistWindow::gamelistWindow(QWidget *parent)
 
     m_scrollArea->setWidget(m_container);
 
-    db.openBase("launcher.db");
-    QVector<AppItem> savedApps = db.takeListOfBase();
+    QVector<AppItem> savedApps = m_db->takeListOfBase();
     for (const AppItem &app : savedApps) {
         QFileIconProvider provider;
         QIcon icon = provider.icon(QFileInfo(app.exePath));
@@ -66,9 +65,6 @@ AppItem gamelistWindow::takeInfo() {
     data.name = QFileInfo(filePath).baseName();
     data.exePath = filePath;
     data.id = counterCards;
-    qDebug() << data.name;
-    qDebug() << filePath;
-    qDebug() << data.id;
     return data;
 }
 
@@ -94,7 +90,7 @@ void gamelistWindow::on_openFileButton_clicked() {
     QFileIconProvider provider;
     QIcon icon = provider.icon(QFileInfo(cardInfo.exePath));
     Gamecard *card = new Gamecard(cardInfo.id, cardInfo.name, cardInfo.exePath, icon, m_container);
-    db.addProgramToBase(cardInfo);
+    m_db->addProgramToBase(cardInfo);
     connect(card, &Gamecard::removeRequested, this, &gamelistWindow::onCardRemoveRequested);
     cardList.push_back(card);
     qDebug() << cardList;
@@ -108,7 +104,7 @@ void gamelistWindow::onCardRemoveRequested() {
 
     if (card) {
         int id = card->getId();
-        db.deleteProgram(id);
+        m_db->deleteProgram(id);
         cardList.removeOne(card);
         card->deleteLater();
         setGeometryButtons();

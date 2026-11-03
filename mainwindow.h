@@ -27,6 +27,7 @@ private:
     gamelistWindow *m_gamelist;
     optimizationWindow *m_optimizationWindow;
     Settings *m_settings;
+    Database *m_db;
     bool isDark = true;
     Ui::MainWindow *ui;
 private slots:

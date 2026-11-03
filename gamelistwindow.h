@@ -13,7 +13,9 @@ class gamelistWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit gamelistWindow(QWidget *parent = nullptr);
+    void extracted(QVector<AppItem> &savedApps);
+    explicit gamelistWindow(Database *db, QWidget *parent = nullptr);
+
 private:
     int counterCards = 0;
     int l = 0;
@@ -21,7 +23,7 @@ private:
     QScrollArea *m_scrollArea;
     QWidget *m_container;
     QGridLayout *m_gridLayout;
-    Database db;
+    Database *m_db;
     QVector<Gamecard*> cardList;
     AppItem cardInfo;
     void setGeometryButtons();

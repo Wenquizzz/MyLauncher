@@ -20,16 +20,19 @@ MainWindow::MainWindow(QWidget *parent)
     setFixedSize(1190, 750);
     setStyleSheet(MAIN_WINDOW_STYLE);
     ui->setupUi(this);
+//DB open:
+    m_db = new Database();
+    m_db->openBase("launcher.db");
 //Windows:
-    m_gamelist = new gamelistWindow(this);
+    m_gamelist = new gamelistWindow(m_db, this);
     m_gamelist->setGeometry(232, 0, 958, 750);
     m_gamelist->show();
 
-    m_optimizationWindow = new optimizationWindow(this);
+    m_optimizationWindow = new optimizationWindow(m_db, this);
     m_optimizationWindow->setGeometry(232, 0, 958, 750);
     m_optimizationWindow ->hide();
 
-    m_settings = new Settings(this);
+    m_settings = new Settings(m_db, this);
     m_settings->setGeometry(232, 0, 958, 750);
     m_settings ->hide();
 //Line:

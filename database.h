@@ -16,6 +16,8 @@ public:
     bool addProgramToBase(const AppItem &app);
     QVector<AppItem> takeListOfBase();
     bool deleteProgram(int id);
+    bool saveTweak(const QString &name, int state);
+    int getTweakState(const QString &name);
 
 private:
     QSqlDatabase m_db;
