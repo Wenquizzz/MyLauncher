@@ -14,7 +14,9 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     optimizationwindow.cpp \
-    settings.cpp
+    settings.cpp \
+    steamscanner.cpp \
+    steamselectorwindow.cpp
 
 HEADERS += \
     AppItem.h \
@@ -24,7 +26,10 @@ HEADERS += \
     mainwindow.h \
     optimizationwindow.h \
     settings.h \
-    styles.h
+    steamscanner.h \
+    steamselectorwindow.h \
+    styles.h \
+    vdf_parser.h
 
 FORMS += \
     mainwindow.ui

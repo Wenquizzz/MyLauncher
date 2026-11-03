@@ -113,4 +113,42 @@ QTabWidget::pane {
     background-color: #FFFFFF;
 }
 )";
+
+const QString STEAM_LIST_STYLE = R"(
+QListWidget {
+    background-color: #FFFFFF;
+    color: #FFFFFF;
+    border: 1px solid #3A4444;
+    border-radius: 8px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+QListWidget::item {
+    padding: 10px;
+    border-bottom: 1px solid #3A4444;
+}
+
+QListWidget::item:hover {
+    background-color: #2B2442;
+}
+
+QListWidget::indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: #D3D3D3;
+    border: 1px solid #808080;
+}
+
+QListWidget::indicator:hover {
+    background-color: #A9A9A9;
+    border: 1px solid #8EA5A5;
+}
+
+QListWidget::indicator:checked {
+    background-color: #8EA5A5;
+    border: 1px solid #8EA5A5;
+}
+)";
 #endif // STYLES_H

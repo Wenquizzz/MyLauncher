@@ -13,7 +13,7 @@ public:
     bool openBase(const QString &path);
     void closeBase();
 
-    bool addProgramToBase(const AppItem &app);
+    int addProgramToBase(const AppItem &app);
     QVector<AppItem> takeListOfBase();
     bool deleteProgram(int id);
     bool saveTweak(const QString &name, int state);

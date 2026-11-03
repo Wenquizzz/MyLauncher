@@ -30,6 +30,7 @@ private:
     AppItem takeInfo();
 public slots:
     void on_openFileButton_clicked();
+    void on_steamButton_clicked();
 private slots:
     void onCardRemoveRequested();
 };

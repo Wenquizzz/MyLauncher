@@ -1,5 +1,7 @@
 #include "gamelistwindow.h"
 #include "gamecard.h"
+#include "steamselectorwindow.h"
+#include "steamscanner.h"
 #include "styles.h"
 #include <QVector>
 #include <QPainter>
@@ -14,6 +16,7 @@
 #include <QWidget>
 #include <QScrollArea>
 #include <QGridLayout>
+#include <QMessageBox>
 
 gamelistWindow::gamelistWindow(Database *db, QWidget *parent)
     : QWidget(parent), m_db(db)
@@ -53,6 +56,12 @@ gamelistWindow::gamelistWindow(Database *db, QWidget *parent)
     openFileButton->show();
     openFileButton->raise();
     connect(openFileButton, &QPushButton::clicked, this, &gamelistWindow::on_openFileButton_clicked);
+    QPushButton *steamButton = new QPushButton("S", this);
+    steamButton->setGeometry(748, 660, 80, 80);
+    steamButton->setStyleSheet(ADD_CARD_STYLE);
+    steamButton->show();
+    connect(steamButton, &QPushButton::clicked, this, &gamelistWindow::on_steamButton_clicked);
+
 }
 
 AppItem gamelistWindow::takeInfo() {
@@ -97,6 +106,36 @@ void gamelistWindow::on_openFileButton_clicked() {
     card->setProperty("exePath", cardInfo.exePath);
     setGeometryButtons();
     card->show();
+}
+
+void gamelistWindow::on_steamButton_clicked() {
+    QVector<AppItem> foundGames = SteamScanner::scan();
+
+    if (foundGames.isEmpty()) {
+        QMessageBox::information(this, "Scan Result", "No Steam games found.");
+        return;
+    }
+
+    SteamSelectorWindow selector(foundGames, this);
+    if (selector.exec() == QDialog::Accepted) {
+        QVector<AppItem> selected = selector.getSelectedGames();
+
+        for (const AppItem &app : selected) {
+            int newId = m_db->addProgramToBase(app);
+
+            if (newId != -1) {
+                QFileIconProvider provider;
+                QIcon icon = provider.icon(QFileInfo(app.exePath));
+
+                // Создаем карточку с правильным ID из базы
+                Gamecard *card = new Gamecard(newId, app.name, app.exePath, icon, m_container);
+                connect(card, &Gamecard::removeRequested, this, &gamelistWindow::onCardRemoveRequested);
+                cardList.push_back(card);
+                card->show();
+            }
+        }
+        setGeometryButtons();
+    }
 }
 
 void gamelistWindow::onCardRemoveRequested() {

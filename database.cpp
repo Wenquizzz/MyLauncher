@@ -35,12 +35,15 @@ bool Database::createTable() {
     return success;
 }
 
-bool Database::addProgramToBase(const AppItem &app) {
+int Database::addProgramToBase(const AppItem &app) {
     QSqlQuery query(m_db);
     query.prepare("INSERT INTO apps (name, exe_path) VALUES (:name, :path)");
     query.bindValue(":name", app.name);
     query.bindValue(":path", app.exePath);
-    return query.exec();
+    if (query.exec()) {
+        return query.lastInsertId().toInt();
+    }
+    return -1;
 }
 
 QVector<AppItem> Database::takeListOfBase(){
